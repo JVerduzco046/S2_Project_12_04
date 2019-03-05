@@ -46,8 +46,8 @@ for (var i = 0; i <= 7; i++) {
     var totalVotes = 0;
     votes[i].forEach(calcSum);
     reportHTML += "<table> <caption>" + race[i] + "</caption>" + "<tr><th> Candidate</th><th>Votes</th></tr>";
-    candidateRows([i], totalVotes);
-    reportHTML += candidateRows;
+
+    reportHTML += candidateRows([i], totalVotes);
     reportHTML += "</table>";
 }
 document.getElementById("section").innerHTML = reportHTML;
@@ -60,7 +60,32 @@ function candidateRows(raceNum, totalVotes) {
         var candidateParty = party[raceNum][j];
         var candidateVotes = votes[raceNum][j];
         var candidatePercent = calcPercent(candidateVotes, totalVotes);
-        rowHTML += "<tr><td>" + candidateName + candidateParty + "</td><td>" + candidateVotes.toLocaleString() + candidatePercent.toFixed(1) + "</td> </tr>";
+
+        rowHTML += "<tr><td>" + candidateName + "(" + candidateParty + ")" + "</td><td>" + candidateVotes.toLocaleString() + "(" + candidatePercent.toFixed(1) + "%)" + "</td>";
+        for (let k = 0; k < candidatePercent; k++) {
+            rowHTML += createBar(candidateParty, candidatePercent);
+        }
+        rowHTML += "</tr>"
     }
     return rowHTML;
+}
+
+///// JS    for the bars beside the results
+
+function createBar(partyType) {
+    /// its liek an if else statement but without the else because all of them can be true values //
+    var barHTML = "";
+    switch (partyType) {
+        case "D":
+            barHTML = "<td class='dem'></td>";
+            break;
+        case "R":
+            barHTML = "<td class='rep'></td>";
+            break;
+        case "I":
+            barHTML = "<td class='ind'></td>";
+            break;
+    }
+    return barHTML;
+
 }
